@@ -122,7 +122,7 @@ if __name__ == "__main__":
         mean_offset=mean_offset,
         n_particles=100,
         n_samples=100,
-        beta=0.001,
+        beta=0.000,
         gamma=10.0,
         adam_iter=20,
         lr=1e-2,
