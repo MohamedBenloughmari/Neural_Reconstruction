@@ -47,14 +47,14 @@ if __name__ == "__main__":
     torch.manual_seed(seed)
     random.seed(seed)
 
-    enc = HexEncoder(dx=0.05, dy=0.05, dt=0.01, ds=0.4, D_diff=0.0, img_size=32)
+    enc = HexEncoder(dx=0.033, dy=0.033, dt=0.01, ds=0.4, D_diff=0.0, img_size=32)
     enc.fit(optotype)
     enc.simulate_random_walk(T=0.750)
     enc.encode_spikes(grid_range=10, grid_resolution=25)
 
     enc.decode_sequential(
         n_particles=100, n_samples=100,
-        n_iter=20, lr=1e-2,
+        n_iter=50, lr=1e-3,
         beta=0.001,
         anchor_weight=1.0, hessian_tau=10.0,
         hessian_every=1, verbose=True,
@@ -81,6 +81,7 @@ if __name__ == "__main__":
     # Print summary
     print(f"\nMean |θ| = {theta_abs.mean():.4f} rad  = {np.rad2deg(theta_abs.mean()):.2f} deg")
     print(f"Max  |θ| = {theta_abs.max():.4f} rad  = {np.rad2deg(theta_abs.max()):.2f} deg")
+    print(f"Var  |θ| = {theta_abs.var():.4f} rad  = {np.rad2deg(theta_abs.var()):.2f} deg")
 
     anim = enc.animate(interval=100, save_path="reconstruction_single_var.gif")
     plt.show()
