@@ -22,7 +22,7 @@ if __name__ == "__main__":
     pix = 1/28
     D_list = [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 40.0, 50.0, 100.0]
     DX_list = [pix, 1.5*pix, 2*pix, 2.5*pix, 3*pix]
-    seeds = range(10, 11)
+    seeds = range(10, 20)
     image_paths = sorted(glob.glob("images_c/*.png"))
     ds = 0.4
 
