@@ -178,8 +178,8 @@ class HexEncoder:
         g_norm = c_raw.detach().amax(dim=1, keepdim=True).clamp(min=1e-9)
         c = (c_raw / g_norm).clamp(0.0, 1.0)                                 # contrast ∈ [0, 1]
 
-        lam_on  = self.lambda0 * torch.exp(self.lambda0+log_ratio * c)
-        lam_off = self.lambda0 * torch.exp(self.lambda0+log_ratio * (1.0 - c))
+        lam_on  = self.lambda0 * torch.exp(log_ratio * c)
+        lam_off = self.lambda0 * torch.exp(log_ratio * (1.0 - c))
         return lam_on, lam_off
 
     # ------------------------------------------------------------------
@@ -297,7 +297,7 @@ class HexEncoder:
     def decode_sequential(self, n_particles=80, n_samples=30,
                           n_iter=20, lr=1e-2, beta=0.05, gamma=0.1,
                           hessian_every=1, hessian_tau=0.5,
-                          anchor_weight=1.0, verbose=True):
+                          anchor_weight=1.0, True_Path=True, verbose=True):
         """
         Online decoding — update S at each time step.
 
@@ -336,15 +336,20 @@ class HexEncoder:
                 S_prev = S_param.detach()
                 r_on_t  = spikes_on_t[t]
                 r_off_t = spikes_off_t[t]
-                particles, weights = self._propagate_particles(
-                    particles, S_prev, r_on_t, r_off_t)
-                particles, weights = self._resample(particles, weights)
+                if not True_Path:
+                    particles, weights = self._propagate_particles(
+                        particles, S_prev, r_on_t, r_off_t)
+                    particles, weights = self._resample(particles, weights)
 
             self.q_particles[t] = particles
             self.q_weights[t]  = weights
 
             # ---- sample candidate eye positions ----
-            samples = self._sample_positions(particles, weights, n_samples)          # (n_samples, 2)
+            if True_Path:
+                pos = torch.as_tensor(self.walk[t], device=dev, dtype=torch.float32)
+                samples = pos.unsqueeze(0).repeat(n_samples, 1)
+            else:
+                samples = self._sample_positions(particles, weights, n_samples)          # (n_samples, 2)
             cx = samples[:, 0]
             cy = samples[:, 1]
             gx_w, gy_w = self._spatial_kernels(cx, cy)                              # (n_samples, n_cells, W/H)
