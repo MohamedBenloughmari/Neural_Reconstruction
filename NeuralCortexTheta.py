@@ -370,7 +370,7 @@ class HexEncoder:
                 Er = ((lam_on * dt - r_on_t * torch.log(lam_on * dt + eps)).sum(dim=1)
                       + (lam_off * dt - r_off_t * torch.log(lam_off * dt + eps)).sum(dim=1)
                       ).mean()
-
+                
                 if Er.item() < best_loss:
                     best_loss = Er.item()
                     best_S_current = S_rotated

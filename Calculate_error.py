@@ -46,7 +46,7 @@ if __name__ == "__main__":
     D_list = [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 40.0, 50.0, 100.0]
     DX_list = [pix, 1.5*pix, 2*pix, 2.5*pix, 3*pix]
     seeds = range(10, 20)
-    image_paths = sorted(glob.glob("images_c/*.png"))
+    image_paths = sorted(glob.glob("images_c1/*.png"))
     ds = 0.4
 
     base_dir = "results/phase_corr"

@@ -8,10 +8,11 @@ from PIL import Image
 from tqdm import tqdm
 import csv
 
-from neural_cortex import (
-    NeuralEncoder,
+from NeuralCortexSimple_single_var import (
+    HexEncoder,
     load_image_tensor,
 )
+
 
 _EPS = 1e-10
 DX = 0.3
@@ -81,7 +82,7 @@ if __name__ == "__main__":
         all_errors = {}
 
         for D_diff in tqdm(D_list, desc="D_diff", leave=False):
-            sim = NeuralEncoder(
+            sim = HexEncoder(
                 dx=DX, dy=DX, dt=0.02, ds=0.3, D_diff=D_diff, img_size=32
             )
             sim.fit(optotype - mean_offset, blur_sigma=0.0)

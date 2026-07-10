@@ -285,7 +285,7 @@ class HexEncoder:
                 Er = ((lam_on * dt - r_on_t * torch.log(lam_on * dt + eps)).sum(dim=1)
                       + (lam_off * dt - r_off_t * torch.log(lam_off * dt + eps)).sum(dim=1)
                       ).mean()
-
+                
                 S_flat = S_param.reshape(-1)
                 diff = S_flat - S_anchor
                 Eg = 0.5 * cur_aw * (diff @ (Hessian @ diff))

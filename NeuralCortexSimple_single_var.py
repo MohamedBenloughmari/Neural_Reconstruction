@@ -451,7 +451,7 @@ class HexEncoder:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    image_path = "images_c/myopia_0p0D.png"
+    image_path = "images_c copy/myopia_0p0D.png"
 
     optotype = load_image_tensor(image_path, image_size=32, invert=True)
     print(f"Loaded image from: {image_path}")
@@ -461,7 +461,7 @@ if __name__ == "__main__":
     torch.manual_seed(seed)
     random.seed(seed)
 
-    enc = HexEncoder(dx=0.07, dy=0.07, dt=0.01, ds=0.4, D_diff=10.0, img_size=32)
+    enc = HexEncoder(dx=0.1, dy=0.1, dt=0.01, ds=0.4, D_diff=10.0, img_size=32)
     enc.fit(optotype)
     enc.simulate_random_walk(T=0.750)
     enc.encode_spikes(grid_range=10, grid_resolution=25)
